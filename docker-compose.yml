@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: mongo-dev
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_DATABASE=auth
+    networks:
+      - mongo-compose-network
+    ports:
+      - '27017:27017'
+    volumes:
+      - data01:/usr/share/mongo/data
+
+volumes:
+  data01:
+    driver: local
+
+networks:
+  mongo-compose-network:
+    driver: bridge
