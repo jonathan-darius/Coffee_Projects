@@ -1,10 +1,12 @@
 import traceback
-from fastapi.exceptions import HTTPException
 from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
-from fastapi import status
+from fastapi.security import OAuth2PasswordBearer
+from fastapi import status, HTTPException
 from app.config import mongo
 from app.utils.hash import verify_password
+from app.utils.jwt import create_access_token, create_refresh_token
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 def get_all_user():
@@ -19,9 +21,11 @@ def get_all_user():
 
 def register_user(usr):
     client, data = mongo.db()
-    res = data["User"].insert_one(jsonable_encoder(usr))
-    check_user = data["User"].find_one({"_id": res.inserted_id})
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content=check_user)
+    try:
+        data["User"].insert_one(jsonable_encoder(usr))
+        return {"massage": "User Created"}
+    except Exception as e:
+        return e
 
 
 def login_user(login_data):
@@ -33,5 +37,14 @@ def login_user(login_data):
         return {
             "massage": "Wrong User Name or Password !!!"
         }
-    return {"massage": "Login Success", "User_data": user} if verify_password(user["password"], password) else {
-            "massage": "Wrong User Name or Password !!!"}
+    elif verify_password(user["password"], password):
+        return {
+            "access_token": create_access_token(user['username']),
+            "refresh_token": create_refresh_token(user['username'])
+        }
+
+    else:
+        var = {
+            "massage": "Wrong User Name or Password !!!"
+        }
+        return var
