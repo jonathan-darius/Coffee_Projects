@@ -1,4 +1,4 @@
-Coffee Projects (test)
+Coffee Projects
 ==============================================
 ### Install Package
 ```
