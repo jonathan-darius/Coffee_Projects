@@ -26,3 +26,8 @@ def get_data():
 @app.get('/me', summary='Get details of currently logged in user')
 async def get_me(user=Depends(get_current_user)):
     return user
+
+
+@app.post('/add_collecting')
+def collect(data: models.Collector = Body(...)):
+    return mongo.collecting(data)

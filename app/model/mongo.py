@@ -48,3 +48,7 @@ def login_user(login_data):
             "massage": "Wrong User Name or Password !!!"
         }
         return var
+
+
+def collecting(Collector):
+    return Collector
