@@ -62,8 +62,8 @@ class UserModel(BaseModel):
 
 class Collector(BaseModel):
     id_transaction: str = Field(default_factory=uuid4, alias="_id")
-    farmer_name: str = Field(...)
-    collector_name: str = Field(...)
+    farmer_name: str = Field(..., alias="farmer_id")
+    collector_name: str = Field(...,alias="collector_id")
     qty: int = Field(...)
     price: int = Field(...)
     coffee_type: str = Field(...)
@@ -80,7 +80,7 @@ class Collector(BaseModel):
             if checker is None:
                 raise ValueError("User Not Found")
             else:
-                if "Farmer" not in checker["role"]:
+                if "Farmer" in checker["role"]:
                     return checker["_id"]
                 else:
                     raise ValueError("Role Doesn't Match")
@@ -96,7 +96,7 @@ class Collector(BaseModel):
             if checker is None:
                 raise ValueError("Not Found")
             else:
-                if "Collector" not in checker["role"]:
+                if "Collector" in checker["role"]:
                     return checker["_id"]
                 else:
                     raise ValueError("Role Doesn't Match")
