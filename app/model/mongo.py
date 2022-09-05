@@ -51,4 +51,9 @@ def login_user(login_data):
 
 
 def collecting(Collector):
-    return Collector
+    client, data = mongo.db()
+    try:
+        data["Collector"].insert_one(jsonable_encoder(Collector))
+        return {"massage": Collector}
+    except Exception as e:
+        return e

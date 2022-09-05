@@ -107,12 +107,12 @@ class Collector(BaseModel):
         allow_population_by_field_name = True
         schema_extra = {
             "example": {
-                "farmer_name": "joni",
-                "collector_name": "john Doe",
+                "farmer_name": "John99",
+                "collector_name": "DaveID",
                 "qty": "5",
                 "price": "5",
                 "coffee_type": "Robusta",
-                "send_date": "22102022",
+                "send_date": "2020-09-19",
                 "address": "Unknown Street 41B"
             }
         }
